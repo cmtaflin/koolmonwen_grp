@@ -1,0 +1,188 @@
+
+/* Giving the body the specified background color, adding font sizes for the h1 and h3 elements we'll be using */
+body {
+  padding: 5px;
+  margin: 0px;
+  background: #f0f0d5;
+  text-align: left;
+  
+ 
+}
+
+/* Giving our navbar some padding and a background color */
+.navbar {
+  padding: 60px;
+  background: #350431;
+  height:5px;
+  width: 100%;
+}
+h1 {
+  font-size: 50px;
+  text-align: right;
+  font-display: bold;
+  font-family: Arial;
+  color: #350431;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+/* Making our navbar li's inline-block elements this makes it so we can have multiple on the same line. Floats could have been used too */
+.navbar a {
+  float: left;
+  cursor: pointer;
+  background: #350431;
+  border-radius: 20px;
+  font: 1.5em sans-serif;
+  text-decoration: none;
+  text-align: center;
+  padding: 15px 15px;
+  color: #f0f0d5;
+
+}
+.navbar a:hover {
+
+  background-color: #f0f0d5;
+  font: bold;
+  color: #350431;
+}
+.custom-select {
+  position: relative;
+  font-family: Arial;
+  color: #350431;
+  size: 60px;
+ float: left;
+}
+.select-selected {
+  background-color: #350431;
+}
+.select-selected:after {
+  position: relative;
+  content: "";
+  top: 14px;
+  right: 5px;
+  width: 0;
+  height: 0;
+  border: 15px solid transparent;
+  border-color: #fff transparent transparent transparent;
+  
+}
+.box {
+
+height: 400px;
+padding: 20px;
+color: rgb(26, 22, 22);
+background: #f0f0d5;
+border: 1px solid #350431;
+
+}
+.btn {
+  color: #f0f0d5;;
+  font-family: Arial;
+  background: #350431;
+  height: 30px;
+  width: 75px;
+}
+.btn:hover {
+color: #f0f0d5;
+}
+.gadget {
+  font-family: Arial, Helvetica, sans-serif;
+  height: 30px;
+}
+
+.outer {
+  
+  height: 10px;
+  width: 10px;
+
+}
+/*.vertical-menu {
+
+  width: 500px;
+  height: 450px;
+  overflow-y: auto;
+}
+.vertical-menu a {
+background-color: #cc79e0;
+color: #0e0d0d;
+padding: 10px;
+text-decoration: none;
+font: 1em sans-serif;
+}
+.vertical-menu a:hover {
+
+  background-color: #350431;
+  font: bold;
+  color: beige;
+}
+*/
+.header {
+  padding: 80px;
+  margin: auto;
+  float: left;
+} 
+/* Column container */
+.row1 {  
+ 
+  display: flex;
+  flex-wrap: wrap;
+  
+}
+.row2 {  
+ 
+  display: flex;
+  flex-wrap: wrap;
+  
+}
+/* Create two unequal columns that sits next to each other */
+/* Sidebar/left column */
+.side {
+  flex: 30%;
+  -ms-flex: 30%;
+  background-color: rgb(224, 166, 224);
+  padding: 20px;
+  border-block-end: #350431
+}
+/* Main column */
+.main {   
+  flex: 70%;
+  -ms-flex: 70%;
+  background-color:wheat;
+  padding: 20px;
+}
+ Getting rid of the default link styles here 
+.navbar li a {
+  color: #000;
+  text-decoration: none;
+}
+
+
+/* Giving the .post element margin on 3 sides 
+.post {
+  margin-top: 50px;
+  margin-right: 100px;
+  margin-left: 100px;
+}
+
+#nav-select {
+  visibility: hidden;
+}*/
+
+/* Adding media queries to show the drop-down, and hide the navbar when the screen is smaller than 480 pixels 
+@media (max-width: 480px) {
+  .navbar li {
+    padding: 10px;
+  }
+
+  .post {
+    margin-right: 30px;
+    margin-left: 30px;
+  }
+
+  .navbar ul {
+    visibility: hidden;
+  }
+
+  #nav-select {
+    visibility: visible;
+  }
+}
+*/
