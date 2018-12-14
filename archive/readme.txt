@@ -1,0 +1,1 @@
+These files were in the /templates directory, but were moved to place the newer html files in place.
