@@ -57,11 +57,53 @@ def comparison():
     """Return the comparison page."""
     return render_template("comparison.html")
 
+
 @app.route("/analysis")
 def analysis():
     """Return the analysis page."""
     return render_template("analysis.html")
 
+
+@app.route("/top-25")
+def top_25():
+    """Return the analysis page."""
+    return render_template("top-25.html")
+
+
+@app.route("/metacountry/<COUNTRY_Happy>")
+def metacountry(COUNTRY_Happy):
+    """Return the country happiness data for a given choice."""
+    sel = [
+        Happy_Metrics.COUNTRY,
+        Happy_Metrics.REGION,
+        Happy_Metrics.CONTINENT,
+        Happy_Metrics.HAPPINESS_SCORE,
+        Happy_Metrics.ECONOMY_GDP_PER_CAPITA,
+        Happy_Metrics.FAMILY,
+        Happy_Metrics.HEALTH_LIFE_EXPECTANCY,
+        Happy_Metrics.FREEDOM,
+        Happy_Metrics.GENEROSITY,
+        Happy_Metrics.TRUST_GOVERNMENT_CORRUPTION,
+    ]
+
+    results = db.session.query(*sel).filter(Happy_Metrics.COUNTRY == COUNTRY_Happy).all()
+
+    # Create a dictionary entry for each row of country information
+    happy_metrics = {}
+    for result in results:
+        happy_metrics["COUNTRY"] = result[0]
+        happy_metrics["REGION"] = result[1]
+        happy_metrics["CONTINENT"] = result[2]
+        happy_metrics["HAPPINESS_SCORE"] = result[3]
+        happy_metrics["ECONOMY_GDP_PER_CAPITA"] = result[4]
+        happy_metrics["FAMILY"] = result[5]
+        happy_metrics["HEALTH_LIFE_EXPECTANCY"] = result[6]
+        happy_metrics["FREEDOM"] = result[7]
+        happy_metrics["GENEROSITY"] = result[8]
+        happy_metrics["TRUST_GOVERNMENT_CORRUPTION"] = result[9]
+
+    print(happy_metrics)
+    return jsonify(happy_metrics)
 
 @app.route("/happiness")
 def happiness():
@@ -73,6 +115,22 @@ def happiness():
     
     return jsonify(df)
 
+@app.route("/happycountry/<COUNTRY_Happy>")
+def happycountry(COUNTRY_Happy):
+    """Return data values in happiness dataset."""
+    stmt = db.session.query(Happy_Metrics).statement
+    df = pd.read_sql_query(stmt, db.session.bind)
+
+    # Filter the data based on the sample number and
+    # only keep rows with values above 1
+    happy_data = df.loc["otu_id", "otu_label", COUNTRY_Happy]
+    # Format the data to send as json
+    data = {
+        "HAPPINESS_SCORE": sample_data.HAPPINESS_SCORE.values.tolist(),
+        "COUNTRY_Happy": sample_data[COUNTRY_Happy].values.tolist(),
+        "FAMILY": sample_data.FAMILY.tolist(),
+    }
+    return jsonify(data)
 
 # this route is for the country pull-down.  It has a list of all of the countries to choose from.
 @app.route("/countries")
@@ -109,6 +167,8 @@ def continents():
     df = pd.read_sql_query(stmt, db.session.bind)
     
     return jsonify(list(df.columns)[2:])
+
+
 
 # this route will be for the data from the social progress database.  mostly a placeholder for now.
 @app.route("/socialprogress")
