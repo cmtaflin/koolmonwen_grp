@@ -40,6 +40,8 @@ Happy_Metrics=Base.classes.happiness_by_region_yr
 Regions = Base.classes.region_continent
 social_progress = Base.classes.social_progress
 
+#session = Session(engine)
+
 @app.route("/")
 def index():
     """Return the homepage."""
@@ -123,7 +125,7 @@ def happycountry(COUNTRY_Happy):
 
     # Filter the data based on the sample number and
     # only keep rows with values above 1
-    happy_data = df.loc["otu_id", "otu_label", COUNTRY_Happy]
+    happy_data = df.loc["HAPPINESS_SCORE", "FAMILY", COUNTRY_Happy]
     # Format the data to send as json
     data = {
         "HAPPINESS_SCORE": sample_data.HAPPINESS_SCORE.values.tolist(),
@@ -137,24 +139,27 @@ def happycountry(COUNTRY_Happy):
 def countries():
     """Return a list of country names."""
 
-    # Use Pandas to perform the sql query
-    stmt = db.session.query(Regions).statement
-    df = pd.read_sql_query(stmt, db.session.bind)
+    # query to find list of countries
+    results = db.session.query(Regions.COUNTRY).all()
+    
+    all_countries = list(np.ravel(results))
 
     # Return a list of the column names (country names)
-    return jsonify(list(df.columns)[0:])
+    return jsonify(all_countries)
 
 
 # this route is for the regions pull-down.  It has a list of all of the regions to choose from.
 @app.route("/regions")
 def regions():
-    """Return a list of regions, countries, and continents."""
+    """Return a list of regions."""
 
-    # Use Pandas to perform the sql query
-    stmt = db.session.query(Regions).statement
-    df = pd.read_sql_query(stmt, db.session.bind)
+    # query to find list of regions
+    results = db.session.query(Regions.REGION).group_by(Regions.REGION).all()
     
-    return jsonify(list(df.columns)[1:])
+    all_regions = list(np.ravel(results))
+
+    # Return a list of the values (region names)
+    return jsonify(all_regions)
 
 
 # this route is for the continent pull-down.  It has a list of all of the continents to choose from.
@@ -162,11 +167,13 @@ def regions():
 def continents():
     """Return a list of continents."""
 
-    # Use Pandas to perform the sql query
-    stmt = db.session.query(Regions).statement
-    df = pd.read_sql_query(stmt, db.session.bind)
+    # query to find list of continents
+    results = db.session.query(Regions.CONTINENT).group_by(Regions.CONTINENT).all()
     
-    return jsonify(list(df.columns)[2:])
+    all_continents = list(np.ravel(results))
+
+    # Return a list of the values (continent names)
+    return jsonify(all_continents)
 
 
 
