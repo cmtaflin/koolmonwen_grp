@@ -53,12 +53,12 @@ def about():
 
 
 @app.route("/comparison")
-def about():
+def comparison():
     """Return the comparison page."""
     return render_template("comparison.html")
 
 @app.route("/analysis")
-def about():
+def analysis():
     """Return the analysis page."""
     return render_template("analysis.html")
 

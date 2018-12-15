@@ -1,109 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-   
+
 <head>
   <meta charset="UTF-8">
   <title>World Happiness Report</title> 
+  <link rel="stylesheet" href="...static/css/reset.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <link rel="stylesheet" href="../static/css/reset.css">
   <link rel="stylesheet" href="../static/css/styles.css">
 
 </head>
 <body>
     <div class="container">
+        <div class="outer">
+            <img src="Happiness1.jpg">
+         </div>
       <header class="header"> 
       </header>
         <h1>World Happiness</h1> 
     </div>
     
+     </div>
+    
      <div class="navbar">  
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="comparison.html">Comparison</a>
-        <a href="analysis.html">Analysis</a>
+        <a href="/index">Home</a>
+        <a href="/about">About</a>
+        <a href="/comparison">Comparison</a>
+        <a href="/analysis">Analysis</a>
+        <a href="/top-25">Top-25</a>
     </div>
 
-  <br>
-  <div class="gadget">
-    <div class="col-md-6">
-      <form method="get" id="search" action="#">
-         <span>
-            <input type="text" value="Enter Country Here.." name="s" id="s" />
-            <input name="searchsubmit"  value="Search" id="searchsubmit" class="btn"  />
-         </span>
-      </form>
-    </div>
-    <div class="sel_comp_yr" > 
-        <div class="col-md-6">
-          <select>
-            <option value="0">Select Year:</option>
-            <option value="1">2015</option>
-            <option value="2">2016</option>
-            <option value="3">2017</option>
-          </select>
-        </div>
-    <div class="custom-select" > 
-        <div class="col-md-6">
-          <select>
-            <option value="0">Select Country:</option>
-            <option value="1">Africa</option>
-            <option value="2">Asia</option>
-            <option value="3">Arab States</option>
-            <option value="4">Asia & Pacific</option>
-            <option value="5">Europe</option>
-            <option value="6">North America</option>
-            <option value="7">South/Latin America</option>s
-          </select>
-        </div>
-    </div>
-    <div class="custom-select1" > 
-        <div class="col-md-6">
-          <select>
-            <option value="0">Select Country:</option>
-            <option value="1">Africa</option>
-            <option value="2">Asia</option>
-            <option value="3">Arab States</option>
-            <option value="4">Asia & Pacific</option>
-            <option value="5">Europe</option>
-            <option value="6">North America</option>
-            <option value="7">South/Latin America</option>s
-          </select>
-      </div>
-    
-        <!-- <div id="sel_comp_yr"</div> -->
-    </div>      
-    <div class="row1">
+    <div class="row">
       <div class="col-md-6">
-        <div class="box">
-            <div id="country1_plot"></div>
-            <p>hi
-              <br>
-              hi
-              <br>
-              hi
-              <br>
-
-
-
-            hi  
-            </p> 
-          <!-- <div id="sel_comp_yr"</div> -->
-        </div>    
-      </div>
-      <div class="col-md-6">
-        <div class="box">
-            <p>hi
-                <br>
-                hi
-                <br>
-                hi
-                <br>
-                hi
-            </p>
+        <div class="row">
+          <div class="row">
+            <div class="gadget">
+              <form method="get" id="search" action="#">
+                <span>
+                  <input type="text" value="Enter Country Here.." name="s" id="s" />
+                  <input name="searchsubmit" value="Search" id="searchsubmit" class="btn" />
+                </span>
+              </form>
+            </div>
+          </div>
+          <div class="row">
+            <div class="custom-select">
+              <select>
+                <option value="0">Select Year:</option>
+                <option value="1">2015</option>
+                <option value="2">2016</option>
+                <option value="3">2017</option>
+              </select>
+            </div>
+          </div>
         </div>
-      </div>   
-    </div>
-    
+        <div class="row">
+          <div class="box1">
+          </div>
+        </div>
+      </div>
 
+      <div class="col-md-6">
+        <div class="row">
+          <div class="row">
+            <div class="gadget">
+              <form method="get" id="search1" action="#">
+                <span>
+                  <input type="text" value="Enter Country Here.." name="s" id="s" />
+                  <input name="searchsubmit1" value="Search" id="searchsubmit1" class="btn" />
+                </span>
+              </form>
+            </div>
+          </div>
+          <div class="row">
+            <div class="custom-select1">
+              <select>
+                <option value="0">Select Year:</option>
+                <option value="1">2015</option>
+                <option value="2">2016</option>
+                <option value="3">2017</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="box2">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  </div>
 </body>
+
 </html>
