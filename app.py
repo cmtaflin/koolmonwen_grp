@@ -21,7 +21,7 @@ app = Flask(__name__)
 # Database Setup
 #################################################
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db/happiness.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db/happiness.sqlite"
 db = SQLAlchemy(app)
 
 #commented out the next line since we are now using sqlite
@@ -44,6 +44,23 @@ social_progress = Base.classes.social_progress
 def index():
     """Return the homepage."""
     return render_template("index.html")
+
+
+@app.route("/about")
+def about():
+    """Return the about page."""
+    return render_template("about.html")
+
+
+@app.route("/comparison")
+def about():
+    """Return the comparison page."""
+    return render_template("comparison.html")
+
+@app.route("/analysis")
+def about():
+    """Return the analysis page."""
+    return render_template("analysis.html")
 
 
 @app.route("/happiness")
