@@ -36,7 +36,7 @@ Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
 # Save references to each table
-Happy_Metrics=Base.classes.happiness_by_region_yr
+Happy_Metrics = Base.classes.happiness_by_region_yr
 Regions = Base.classes.region_continent
 social_progress = Base.classes.social_progress
 
@@ -112,10 +112,25 @@ def happiness():
     """Return a list of happiness entries by country."""
 
     # Use Pandas to perform the sql query
-    stmt = db.session.query(happiness_by_region_yr).statement
-    df = pd.read_sql_query(stmt, db.session.bind)
+    results_happy = db.session.query(Happy_Metrics).all()
     
-    return jsonify(df)
+    happydata = []
+    for result in results_happy:
+        happy_dict = {}
+        happy_dict["COUNTRY"] = result.COUNTRY
+        happy_dict["REGION"] = result.REGION
+        happy_dict["CONTINENT"] = result.CONTINENT
+        happy_dict["HAPPINESS_SCORE"] = result.HAPPINESS_SCORE
+        happy_dict["ECONOMY_GDP_PER_CAPITA"] = result.ECONOMY_GDP_PER_CAPITA
+        happy_dict["FAMILY"] = result.FAMILY
+        happy_dict["HEALTH_LIFE_EXPECTANCY"] = result.HEALTH_LIFE_EXPECTANCY
+        happy_dict["FREEDOM"] = result.FREEDOM
+        happy_dict["GENEROSITY"] = result.GENEROSITY
+        happy_dict["TRUST_GOVERNMENT_CORRUPTION"] = result.TRUST_GOVERNMENT_CORRUPTION
+        happydata.append(happy_dict)
+            
+    
+    return jsonify(happydata)
 
 @app.route("/happycountry/<COUNTRY_Happy>")
 def happycountry(COUNTRY_Happy):
@@ -181,12 +196,26 @@ def continents():
 @app.route("/socialprogress")
 def socialprogress():
     """Return a list of social progress items."""
+    
+    
 
     # Use Pandas to perform the sql query
-    stmt = db.session.query(social_progress).statement
-    df = pd.read_sql_query(stmt, db.session.bind)
+    results_spi = db.session.query(social_progress).all()
     
-    return jsonify(df)
+    spi = []
+    for result in results_spi:
+        spi_dict = {}
+        spi_dict["Country"] = result.Country
+        spi_dict["SPI"] = result.SPI
+        spi_dict["BNeeds"] = result.BNeeds
+        spi_dict["FWellB"] = result.FWellB
+        spi_dict["Opportunity"] = result.Opport
+        spi_dict["Shelter"] = result.Shelter
+        spi_dict["Health"] = result.Health
+        spi.append(spi_dict)
+            
+    
+    return jsonify(spi)
 
 if __name__ == "__main__":
     app.run()
