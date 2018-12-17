@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+   
+<head>
+  <meta charset="UTF-8">
+  <title>World Happiness Report</title> 
+  <link rel="stylesheet" href="../static/css/reset.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="../static/css/styles.css">
+
+</head>
+<body>
+    <div class="container">
+        <div class="outer">
+            <img src="../images/Happiness1.jpg">
+         </div>
+      <header class="header"> 
+      </header>
+        <h1>World Happiness</h1> 
+    </div>
+    
+     </div>
+    
+     <div class="navbar">  
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/comparison">Comparison</a>
+        <a href="/analysis">Analysis</a>
+        <a href="/top-25">Top-25</a>
+    </div>
+      <div class="gadget">
+        <form method="get" id="search" action="#">
+           <span>
+              <input type="text" value="Enter Country Here.." name="s" id="s" />
+              <input name="searchsubmit"  value="Search" id="searchsubmit" class="btn"  />
+           </span>
+        </form>
+      </div>
+  <br>
+    <div class="custom-select" > 
+      <select>
+        <option value="0">Select Year:</option>
+        <option value="1">2015</option>
+        <option value="2">2016</option>
+        <option value="3">2017</option>
+      </select>
+    </div>
+
+    <div class="row1">
+      <div class="col-md-6">
+        <div class="box">
+        </div>    
+      </div>
+      <div class="col-md-6">
+        <div class="box">
+        </div>
+      </div>   
+    </div>
+    <br>
+    <div class="row2">
+        <div class="col-md-12">
+          <div class="box">
+            <div id="bubble"></div>
+          </div>    
+        </div>
+    </div>
+    <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+    <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>   
+    <script src="../static/js/app1.js"></script>
+</body>
+</html>

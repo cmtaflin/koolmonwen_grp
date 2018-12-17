@@ -1,3 +1,10 @@
+# Structure of file
+#1.) Flask Setup and HTML routes 
+#2.) API lists of fields (Happiness data, Country, Region, Continent)
+#3.) Routes that Depend on User inputs to filter data and render to Visualization
+
+# 1.) Flask Set up and HTML Routes
+
 import os
 
 import pandas as pd
@@ -8,6 +15,7 @@ import numpy as np
 #pymysql.install_as_MySQLdb()
 
 import sqlalchemy
+from sqlalchemy import and_
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
@@ -36,7 +44,7 @@ Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
 # Save references to each table
-Happy_Metrics = Base.classes.happiness_by_region_yr
+Happy_Metrics=Base.classes.happiness_by_region_yr
 Regions = Base.classes.region_continent
 social_progress = Base.classes.social_progress
 
@@ -71,83 +79,18 @@ def top_25():
     """Return the analysis page."""
     return render_template("top-25.html")
 
+#2.) API lists of fields (Happiness data, Country, Region, Continent)
 
-@app.route("/metacountry/<COUNTRY_Happy>")
-def metacountry(COUNTRY_Happy):
-    """Return the country happiness data for a given choice."""
-    sel = [
-        Happy_Metrics.COUNTRY,
-        Happy_Metrics.REGION,
-        Happy_Metrics.CONTINENT,
-        Happy_Metrics.HAPPINESS_SCORE,
-        Happy_Metrics.ECONOMY_GDP_PER_CAPITA,
-        Happy_Metrics.FAMILY,
-        Happy_Metrics.HEALTH_LIFE_EXPECTANCY,
-        Happy_Metrics.FREEDOM,
-        Happy_Metrics.GENEROSITY,
-        Happy_Metrics.TRUST_GOVERNMENT_CORRUPTION,
-    ]
-
-    results = db.session.query(*sel).filter(Happy_Metrics.COUNTRY == COUNTRY_Happy).all()
-
-    # Create a dictionary entry for each row of country information
-    happy_metrics = {}
-    for result in results:
-        happy_metrics["COUNTRY"] = result[0]
-        happy_metrics["REGION"] = result[1]
-        happy_metrics["CONTINENT"] = result[2]
-        happy_metrics["HAPPINESS_SCORE"] = result[3]
-        happy_metrics["ECONOMY_GDP_PER_CAPITA"] = result[4]
-        happy_metrics["FAMILY"] = result[5]
-        happy_metrics["HEALTH_LIFE_EXPECTANCY"] = result[6]
-        happy_metrics["FREEDOM"] = result[7]
-        happy_metrics["GENEROSITY"] = result[8]
-        happy_metrics["TRUST_GOVERNMENT_CORRUPTION"] = result[9]
-
-    print(happy_metrics)
-    return jsonify(happy_metrics)
 
 @app.route("/happiness")
 def happiness():
     """Return a list of happiness entries by country."""
 
     # Use Pandas to perform the sql query
-    results_happy = db.session.query(Happy_Metrics).all()
-    
-    happydata = []
-    for result in results_happy:
-        happy_dict = {}
-        happy_dict["COUNTRY"] = result.COUNTRY
-        happy_dict["REGION"] = result.REGION
-        happy_dict["CONTINENT"] = result.CONTINENT
-        happy_dict["HAPPINESS_SCORE"] = result.HAPPINESS_SCORE
-        happy_dict["ECONOMY_GDP_PER_CAPITA"] = result.ECONOMY_GDP_PER_CAPITA
-        happy_dict["FAMILY"] = result.FAMILY
-        happy_dict["HEALTH_LIFE_EXPECTANCY"] = result.HEALTH_LIFE_EXPECTANCY
-        happy_dict["FREEDOM"] = result.FREEDOM
-        happy_dict["GENEROSITY"] = result.GENEROSITY
-        happy_dict["TRUST_GOVERNMENT_CORRUPTION"] = result.TRUST_GOVERNMENT_CORRUPTION
-        happydata.append(happy_dict)
-            
-    
-    return jsonify(happydata)
-
-@app.route("/happycountry/<COUNTRY_Happy>")
-def happycountry(COUNTRY_Happy):
-    """Return data values in happiness dataset."""
-    stmt = db.session.query(Happy_Metrics).statement
+    stmt = db.session.query(happiness_by_region_yr).statement
     df = pd.read_sql_query(stmt, db.session.bind)
-
-    # Filter the data based on the sample number and
-    # only keep rows with values above 1
-    happy_data = df.loc["HAPPINESS_SCORE", "FAMILY", COUNTRY_Happy]
-    # Format the data to send as json
-    data = {
-        "HAPPINESS_SCORE": sample_data.HAPPINESS_SCORE.values.tolist(),
-        "COUNTRY_Happy": sample_data[COUNTRY_Happy].values.tolist(),
-        "FAMILY": sample_data.FAMILY.tolist(),
-    }
-    return jsonify(data)
+    
+    return jsonify(df)
 
 # this route is for the country pull-down.  It has a list of all of the countries to choose from.
 @app.route("/countries")
@@ -190,32 +133,133 @@ def continents():
     # Return a list of the values (continent names)
     return jsonify(all_continents)
 
-
-
 # this route will be for the data from the social progress database.  mostly a placeholder for now.
 @app.route("/socialprogress")
 def socialprogress():
     """Return a list of social progress items."""
-    
-    
 
     # Use Pandas to perform the sql query
-    results_spi = db.session.query(social_progress).all()
+    stmt = db.session.query(social_progress).statement
+    df = pd.read_sql_query(stmt, db.session.bind)
     
-    spi = []
-    for result in results_spi:
-        spi_dict = {}
-        spi_dict["Country"] = result.Country
-        spi_dict["SPI"] = result.SPI
-        spi_dict["BNeeds"] = result.BNeeds
-        spi_dict["FWellB"] = result.FWellB
-        spi_dict["Opportunity"] = result.Opport
-        spi_dict["Shelter"] = result.Shelter
-        spi_dict["Health"] = result.Health
-        spi.append(spi_dict)
-            
+    return jsonify(df)
+
+
+# Craig Testing
+# this route will be used to pull years
+@app.route("/years")
+def dataYears():
+    """Return a list of possible years."""
+
+    # query to find list of countries
+    # results = db.session.query(Regions.CONTINENT).group_by(Regions.CONTINENT).all()
+    results = db.session.query(Regions.CONTINENT).group_by(Regions.CONTINENT).all()
+    all_years = list(np.ravel(results))
+
+    # Return a list of the column names (country names)
+    return jsonify(all_years)
+
+# @app.route("/test1")
+# # Use Pandas to perform the sql query
+# stmt = db.session.query(Samples).statement
+# df = pd.read_sql_query(stmt, db.session.bind)
+
+# # Return a list of the column names (sample names)
+# return jsonify(list(df.columns)[2:])
+
+#3.) Routes that Depend on User inputs to filter data and render to Visualization
+
+@app.route("/metacountry/United_States")
+def metacountry(United_States):
+    """Return the country happiness data for a given choice."""
+    sel = [
+        Happy_Metrics.COUNTRY,
+        Happy_Metrics.REGION,
+        Happy_Metrics.CONTINENT,
+        Happy_Metrics.HAPPINESS_SCORE,
+        Happy_Metrics.ECONOMY_GDP_PER_CAPITA,
+        Happy_Metrics.FAMILY,
+        Happy_Metrics.HEALTH_LIFE_EXPECTANCY,
+        Happy_Metrics.FREEDOM,
+        Happy_Metrics.GENEROSITY,
+        Happy_Metrics.TRUST_GOVERNMENT_CORRUPTION,
+    ]
+
+    # results = db.session.query(*sel).filter(Happy_Metrics.COUNTRY == United States).all()
+
+    # Create a dictionary entry for each row of country information
+    happy_metrics = {}
+    for result in results:
+        happy_metrics["COUNTRY"] = result[0]
+        happy_metrics["REGION"] = result[1]
+        happy_metrics["CONTINENT"] = result[2]
+        happy_metrics["HAPPINESS_SCORE"] = result[3]
+        happy_metrics["ECONOMY_GDP_PER_CAPITA"] = result[4]
+        happy_metrics["FAMILY"] = result[5]
+        happy_metrics["HEALTH_LIFE_EXPECTANCY"] = result[6]
+        happy_metrics["FREEDOM"] = result[7]
+        happy_metrics["GENEROSITY"] = result[8]
+        happy_metrics["TRUST_GOVERNMENT_CORRUPTION"] = result[9]
+
+    print(happy_metrics)
+    return jsonify(happy_metrics)
+
+@app.route("/happycountry/<COUNTRY_Happy>")
+def happycountry(COUNTRY_Happy):
+    """Return data values in happiness dataset."""
+    stmt = db.session.query(Happy_Metrics).statement
+    df = pd.read_sql_query(stmt, db.session.bind)
+
+    # Filter the data based on the sample number and
+    # only keep rows with values above 1
+    happy_data = df.loc["HAPPINESS_SCORE", "FAMILY", COUNTRY_Happy]
+    # Format the data to send as json
+    data = {
+        "HAPPINESS_SCORE": sample_data.HAPPINESS_SCORE.values.tolist(),
+        "COUNTRY_Happy": sample_data[COUNTRY_Happy].values.tolist(),
+        "FAMILY": sample_data.FAMILY.tolist(),
+    }
+    return jsonify(data)
+
+@app.route("/comparison/compRightPie")
+def compRightPie():
+    # Use Pandas to perform the sql query
+
+    countryselect = "United Kingdom"
+    yearselect= 2015
+    results = db.session.query(Happy_Metrics.CONTINENT,Happy_Metrics.COUNTRY,Happy_Metrics.YEAR).filter(and_(Happy_Metrics.COUNTRY==countryselect,Happy_Metrics.YEAR==yearselect)).all()
+    # CMT notes:
+    # Add pull for year and country = 
     
-    return jsonify(spi)
+    compRightPie=[]
+    for metrics in results:
+        compRightPie_dict={}
+        compRightPie_dict["CONTINENT"]=metrics.CONTINENT
+        compRightPie_dict["COUNTRY"]=metrics.COUNTRY
+        compRightPie_dict["YEAR"]=metrics.YEAR
+        compRightPie.append(compRightPie_dict)
+
+    return jsonify(compRightPie)
+
+@app.route("/comparison/compLeftPie")
+def compLeftPie():
+    # Use Pandas to perform the sql query
+    
+    countryselect = "United Kingdom"
+    yearselect= 2016
+    results = db.session.query(Happy_Metrics.CONTINENT,Happy_Metrics.COUNTRY,Happy_Metrics.YEAR).filter(and_(Happy_Metrics.COUNTRY==countryselect,Happy_Metrics.YEAR==yearselect)).all()
+    # CMT notes:
+    # Add pull for year and country = 
+    
+    compLeftPie=[]
+    for metrics in results:
+        compLeftPie_dict={}
+        compLeftPie_dict["CONTINENT"]=metrics.CONTINENT
+        compLeftPie_dict["COUNTRY"]=metrics.COUNTRY
+        compLeftPie_dict["YEAR"]=metrics.YEAR
+        compLeftPie.append(compLeftPie_dict)
+
+    return jsonify(compLeftPie)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
