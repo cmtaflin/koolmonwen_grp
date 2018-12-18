@@ -15,7 +15,6 @@ import numpy as np
 #pymysql.install_as_MySQLdb()
 
 import sqlalchemy
-from sqlalchemy import and_
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
@@ -79,6 +78,12 @@ def top_25():
     """Return the analysis page."""
     return render_template("top-25.html")
 
+# TEst
+@app.route("/CMT")
+def cmt ():
+    return render_template("CMT.html")
+
+
 #2.) API lists of fields (Happiness data, Country, Region, Continent)
 
 
@@ -87,10 +92,25 @@ def happiness():
     """Return a list of happiness entries by country."""
 
     # Use Pandas to perform the sql query
-    stmt = db.session.query(happiness_by_region_yr).statement
-    df = pd.read_sql_query(stmt, db.session.bind)
+    results_happy = db.session.query(Happy_Metrics).all()
     
-    return jsonify(df)
+    happydata = []
+    for result in results_happy:
+        happy_dict = {}
+        happy_dict["COUNTRY"] = result.COUNTRY
+        happy_dict["REGION"] = result.REGION
+        happy_dict["CONTINENT"] = result.CONTINENT
+        happy_dict["HAPPINESS_SCORE"] = result.HAPPINESS_SCORE
+        happy_dict["ECONOMY_GDP_PER_CAPITA"] = result.ECONOMY_GDP_PER_CAPITA
+        happy_dict["FAMILY"] = result.FAMILY
+        happy_dict["HEALTH_LIFE_EXPECTANCY"] = result.HEALTH_LIFE_EXPECTANCY
+        happy_dict["FREEDOM"] = result.FREEDOM
+        happy_dict["GENEROSITY"] = result.GENEROSITY
+        happy_dict["TRUST_GOVERNMENT_CORRUPTION"] = result.TRUST_GOVERNMENT_CORRUPTION
+        happydata.append(happy_dict)
+            
+    
+    return jsonify(happydata)
 
 # this route is for the country pull-down.  It has a list of all of the countries to choose from.
 @app.route("/countries")
@@ -139,33 +159,22 @@ def socialprogress():
     """Return a list of social progress items."""
 
     # Use Pandas to perform the sql query
-    stmt = db.session.query(social_progress).statement
-    df = pd.read_sql_query(stmt, db.session.bind)
+    results_spi = db.session.query(social_progress).all()
     
-    return jsonify(df)
-
-
-# Craig Testing
-# this route will be used to pull years
-@app.route("/years")
-def dataYears():
-    """Return a list of possible years."""
-
-    # query to find list of countries
-    # results = db.session.query(Regions.CONTINENT).group_by(Regions.CONTINENT).all()
-    results = db.session.query(Regions.CONTINENT).group_by(Regions.CONTINENT).all()
-    all_years = list(np.ravel(results))
-
-    # Return a list of the column names (country names)
-    return jsonify(all_years)
-
-# @app.route("/test1")
-# # Use Pandas to perform the sql query
-# stmt = db.session.query(Samples).statement
-# df = pd.read_sql_query(stmt, db.session.bind)
-
-# # Return a list of the column names (sample names)
-# return jsonify(list(df.columns)[2:])
+    spi = []
+    for result in results_spi:
+        spi_dict = {}
+        spi_dict["Country"] = result.Country
+        spi_dict["SPI"] = result.SPI
+        spi_dict["BNeeds"] = result.BNeeds
+        spi_dict["FWellB"] = result.FWellB
+        spi_dict["Opportunity"] = result.Opport
+        spi_dict["Shelter"] = result.Shelter
+        spi_dict["Health"] = result.Health
+        spi.append(spi_dict)
+            
+    
+    return jsonify(spi)
 
 #3.) Routes that Depend on User inputs to filter data and render to Visualization
 
@@ -221,6 +230,34 @@ def happycountry(COUNTRY_Happy):
     }
     return jsonify(data)
 
+@app.route("/socialhappy")
+def socialhappy():  
+    
+    testresult = db.session.query(Happy_Metrics).join(social_progress).filter(Happy_Metrics.COUNTRY==social_progress.Country).all()
+    
+    socialhappy = []
+    for result in testresult:
+        shappy_dict = {}
+        shappy_dict["Country"] = result.COUNTRY
+        shappy_dict["SPI"] = result.social_progress.SPI
+        shappy_dict["HEALTH_LIFE_EXPECTANCY"] = result.HEALTH_LIFE_EXPECTANCY
+        shappy_dict["HAPPINESS_SCORE"] = result.HAPPINESS_SCORE
+        shappy_dict["ECONOMY_GDP_PER_CAPITA"] = result.ECONOMY_GDP_PER_CAPITA
+        shappy_dict["FAMILY"] = result.FAMILY
+        shappy_dict["FREEDOM"] = result.FREEDOM
+        shappy_dict["GENEROSITY"] = result.GENEROSITY
+        shappy_dict["TRUST_GOVERNMENT_CORRUPTION"] = result.TRUST_GOVERNMENT_CORRUPTION
+        shappy_dict["BNeeds"] = result.social_progress.BNeeds
+        shappy_dict["FWellB"] = result.social_progress.FWellB
+        shappy_dict["Opportunity"] = result.social_progress.Opport
+        shappy_dict["Shelter"] = result.social_progress.Shelter
+        shappy_dict["Health"] = result.social_progress.Health
+        shappy_dict["Per_Safe"] = result.social_progress.Per_Safe
+        shappy_dict["Free_Cho"] = result.social_progress.Free_Cho
+        shappy_dict["Tol_Incl"] = result.social_progress.Tol_Incl
+        socialhappy.append(shappy_dict)
+        return jsonify(socialhappy)
+
 @app.route("/comparison/compRightPie")
 def compRightPie():
     # Use Pandas to perform the sql query
@@ -247,19 +284,38 @@ def compLeftPie():
     
     countryselect = "United Kingdom"
     yearselect= 2016
-    results = db.session.query(Happy_Metrics.CONTINENT,Happy_Metrics.COUNTRY,Happy_Metrics.YEAR).filter(and_(Happy_Metrics.COUNTRY==countryselect,Happy_Metrics.YEAR==yearselect)).all()
-    # CMT notes:
-    # Add pull for year and country = 
+    results = db.session.query(Happy_Metrics.COUNTRY,Happy_Metrics.REGION,Happy_Metrics.CONTINENT,\
+        Happy_Metrics.HAPPINESS_RANK,Happy_Metrics.HAPPINESS_SCORE,Happy_Metrics.ECONOMY_GDP_PER_CAPITA,Happy_Metrics.FAMILY,\
+        Happy_Metrics.HEALTH_LIFE_EXPECTANCY,Happy_Metrics.FREEDOM,Happy_Metrics.GENEROSITY,Happy_Metrics.TRUST_GOVERNMENT_CORRUPTION)\
+        .filter(Happy_Metrics.COUNTRY==countryselect).all() 
     
     compLeftPie=[]
     for metrics in results:
         compLeftPie_dict={}
-        compLeftPie_dict["CONTINENT"]=metrics.CONTINENT
-        compLeftPie_dict["COUNTRY"]=metrics.COUNTRY
-        compLeftPie_dict["YEAR"]=metrics.YEAR
+        compLeftPie_dict["ECONOMY_GDP_PER_CAPITA"]=metrics.ECONOMY_GDP_PER_CAPITA
+        compLeftPie_dict["FAMILY"]=metrics.FAMILY
+        compLeftPie_dict["HEALTH_LIFE_EXPECTANCY"]=metrics.HEALTH_LIFE_EXPECTANCY
+        compLeftPie_dict["FREEDOM"]=metrics.FREEDOM
+        compLeftPie_dict["GENEROSITY"]=metrics.GENEROSITY
+        compLeftPie_dict["TRUST_GOVERNMENT_CORRUPTION"]=metrics.TRUST_GOVERNMENT_CORRUPTION
         compLeftPie.append(compLeftPie_dict)
+    
+    compLeftPielabels_list = []
+    compLeftPievalues_list = []
+    
+    for label, value in compLeftPie_dict.items():
+        compLeftPielabels_list.append(label)
+        compLeftPievalues_list.append(value)
 
-    return jsonify(compLeftPie)
+    data_py=[{
+        "labels":compLeftPielabels_list.values.tolist(),
+        "values":compLeftPievalues_list.values.tolist(),
+        "type":"pie"
+    }]
+    
+    return jsonify(data_py)
 
+# liST (HAPPINESS_SCORE, ECOND,)
+# vALUES(METRICS_HAPPINESS_SORE,)
 if __name__ == "__main__":
     app.run(debug=True)
