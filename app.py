@@ -234,6 +234,7 @@ def happycountry(COUNTRY_Happy):
 def socialhappy():  
     
     testresult = db.session.query(Happy_Metrics).join(social_progress).filter(Happy_Metrics.COUNTRY==social_progress.Country).all()
+    #testresult = db.session.query(Happy_Metrics).join(social_progress).all()
     
     socialhappy = []
     for result in testresult:
@@ -256,7 +257,8 @@ def socialhappy():
         shappy_dict["Free_Cho"] = result.social_progress.Free_Cho
         shappy_dict["Tol_Incl"] = result.social_progress.Tol_Incl
         socialhappy.append(shappy_dict)
-        return jsonify(socialhappy)
+        
+    return jsonify(socialhappy)
 
 @app.route("/comparison/compRightPie")
 def compRightPie():
