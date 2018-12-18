@@ -194,7 +194,7 @@ def metacountry(United_States):
         Happy_Metrics.TRUST_GOVERNMENT_CORRUPTION,
     ]
 
-    # results = db.session.query(*sel).filter(Happy_Metrics.COUNTRY == United States).all()
+    # results = db.session.query(*sel).filter(Happy_Metrics.COUNTRY = United Kingdom).all()
 
     # Create a dictionary entry for each row of country information
     happy_metrics = {}
@@ -308,8 +308,8 @@ def compLeftPie():
         compLeftPievalues_list.append(value)
 
     data_py=[{
-        "labels":compLeftPielabels_list.values.tolist(),
-        "values":compLeftPievalues_list.values.tolist(),
+        "labels":compLeftPielabels_list,
+        "values":compLeftPievalues_list,
         "type":"pie"
     }]
     
