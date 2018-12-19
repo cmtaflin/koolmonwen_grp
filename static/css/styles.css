@@ -70,13 +70,13 @@ background: #f0f0d5;
 border: 1px solid #350431;
 }
 
-.box3{
-border: 5px solid #A40808;
-padding: 20px;
-background-color: #EEE7DB;
-width: 500px;
-text-align: right;
-border-collapse: collapse;
+.box3 {
+  border: 5px solid #A40808;
+  background-color: #EEE7DB;
+  width: 100%;
+  text-align: left;
+  font: 1em sans-serif;
+  border-collapse: collapse;
 }
 .center {
   margin-left:auto; 
