@@ -17,16 +17,20 @@ function buildCharts() {
     var trace1 =response;
     var pieLayout = {
         showlegend: true,
-        title: "Happiness chart by Country"
+        title: "Happiness chart by Country",
+        legend: {
+            x: 1,
+            y: 0.5
+        }
     };
     Plotly.newPlot("pie", trace1, pieLayout);
     });
 };
   
 function init() {
-    // Grab a reference to the dropdown select element
+    // Grab a reference to the dropdowapn select element
     var selector = d3.select("#selCountryindex");
-    print (selector);
+    
     // Use the list of sample names to populate the select options
     d3.json("/countries").then((sampleNames) => {
         sampleNames.forEach((sample) => {

@@ -6,10 +6,8 @@ function rightPieChart (){
     var rightPieTrace= response;
    
     var rightlayout = {
+      showlegend:false,
       title: "Country 1",
-      width: 600,
-      height: 400,
-      showlegend:false
     };
   
     Plotly.newPlot("compRightPie", rightPieTrace, rightlayout);
@@ -22,11 +20,9 @@ function leftPieChart(){
     console.log(response)
 
     var leftPieTrace= response;
-    console.log(response);
+
     var leftlayout = {
       title: "Country 2",
-      width: 600,
-      height: 400,
       showlegend:false
     };
     
