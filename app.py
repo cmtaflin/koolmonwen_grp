@@ -78,10 +78,41 @@ def top_25():
     """Return the analysis page."""
     return render_template("top-25.html")
 
-# TEst
-@app.route("/CMT")
-def cmt ():
-    return render_template("CMT.html")
+@app.route("/top-25_happiness")
+def top_25_happiness():
+    """Return the analysis page."""
+    return render_template("top-25_happiness.html")
+
+@app.route("/top-25_economy")
+def top_25_happiness_economy():
+    """Return the analysis page."""
+    return render_template("top-25_economy.html")
+
+@app.route("/top-25_family")
+def top_25_happiness_family():
+    """Return the analysis page."""
+    return render_template("top-25_family.html")
+
+@app.route("/top-25_health")
+def top_25_happiness_health():
+    """Return the analysis page."""
+    return render_template("top-25_health.html")
+
+@app.route("/top-25_freedom")
+def top_25_happiness_freedom():
+    """Return the analysis page."""
+    return render_template("top-25_freedom.html")
+
+@app.route("/top-25_generosity")
+def top_25_happiness_generosity():
+    """Return the analysis page."""
+    return render_template("top-25_generosity.html")
+
+@app.route("/top-25_trust")
+def top_25_happiness_trust():
+    """Return the analysis page."""
+    return render_template("top-25_trust.html")
+
 
 
 #2.) API lists of fields (Happiness data, Country, Region, Continent)
