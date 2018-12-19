@@ -1,5 +1,5 @@
 
-function countryData(countries) {
+function buildMetadata() {
     var dataURL = "/countries";
     var panelBody = d3.select("#search");
     panelBody.html("");
@@ -12,28 +12,24 @@ function countryData(countries) {
     })
 }
 
-function buildCharts(countries) {
-    d3.json(`/countries/${countries}`).then(function(response) {
-        var trace1 =[{
-            values: response.country_values,
-            labels: response.happiness_rank,
-            type: "pie"
-        }];
-        var pieLayout = {
-            showlegend: true,
-            title: "Happiness chart by Country"
-        };
-        Plotly.newplot("pie", trace1, pieLayout);
-    })
-}
+function buildCharts() {
+  d3.json(`/happycountry/<COUNTRY_Happy>`).then(function(response) {
+    var trace1 =response;
+    var pieLayout = {
+        showlegend: true,
+        title: "Happiness chart by Country"
+    };
+    Plotly.newPlot("pie", trace1, pieLayout);
+    });
+};
   
 function init() {
     // Grab a reference to the dropdown select element
-    var selector = d3.select("#selCountryBase");
-  
+    var selector = d3.select("#selCountryindex");
+    print (selector);
     // Use the list of sample names to populate the select options
-    d3.json("/countries").then((countryNames) => {
-        countryNames.forEach((sample) => {
+    d3.json("/countries").then((sampleNames) => {
+        sampleNames.forEach((sample) => {
         selector
           .append("option")
           .text(sample)
@@ -52,6 +48,7 @@ function init() {
     // Fetch new data each time a new sample is selected
     buildCharts(newSample);
     buildMetadata(newSample);
+    console.log(newSample);
   }
   
   // Initialize the dashboard

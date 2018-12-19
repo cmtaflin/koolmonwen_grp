@@ -246,20 +246,55 @@ def metacountry(United_States):
 
 @app.route("/happycountry/<COUNTRY_Happy>")
 def happycountry(COUNTRY_Happy):
-    """Return data values in happiness dataset."""
-    stmt = db.session.query(Happy_Metrics).statement
-    df = pd.read_sql_query(stmt, db.session.bind)
+    
+    COUNTRY_Happy = "Afghanistan"
+    results = db.session.query(Happy_Metrics.COUNTRY,Happy_Metrics.REGION,Happy_Metrics.CONTINENT,\
+        Happy_Metrics.HAPPINESS_RANK,Happy_Metrics.HAPPINESS_SCORE,Happy_Metrics.ECONOMY_GDP_PER_CAPITA,Happy_Metrics.FAMILY,\
+        Happy_Metrics.HEALTH_LIFE_EXPECTANCY,Happy_Metrics.FREEDOM,Happy_Metrics.GENEROSITY,Happy_Metrics.TRUST_GOVERNMENT_CORRUPTION)\
+        .filter(Happy_Metrics.COUNTRY==COUNTRY_Happy).all() 
+    print(results)
+    
+    indexPie=[]
+    for metrics in results:
+        indexPie_dict={}
+        indexPie_dict["ECONOMY_GDP_PER_CAPITA"]=metrics.ECONOMY_GDP_PER_CAPITA
+        indexPie_dict["FAMILY"]=metrics.FAMILY
+        indexPie_dict["HEALTH_LIFE_EXPECTANCY"]=metrics.HEALTH_LIFE_EXPECTANCY
+        indexPie_dict["FREEDOM"]=metrics.FREEDOM
+        indexPie_dict["GENEROSITY"]=metrics.GENEROSITY
+        indexPie_dict["TRUST_GOVERNMENT_CORRUPTION"]=metrics.TRUST_GOVERNMENT_CORRUPTION
+        indexPie.append(indexPie_dict)
+    
+    indexPielabels_list = []
+    indexPievalues_list = []
+    
+    for label, value in indexPie_dict.items():
+        indexPielabels_list.append(label)
+        indexPievalues_list.append(value)
 
-    # Filter the data based on the sample number and
-    # only keep rows with values above 1
-    happy_data = df.loc["HAPPINESS_SCORE", "FAMILY", COUNTRY_Happy]
-    # Format the data to send as json
-    data = {
-        "HAPPINESS_SCORE": sample_data.HAPPINESS_SCORE.values.tolist(),
-        "COUNTRY_Happy": sample_data[COUNTRY_Happy].values.tolist(),
-        "FAMILY": sample_data.FAMILY.tolist(),
-    }
-    return jsonify(data)
+    data_py=[{
+        "labels":indexPielabels_list,
+        "values":indexPievalues_list,
+        "type":"pie"
+    }]
+    
+    return jsonify(data_py)
+    
+    
+    # """Return data values in happiness dataset."""
+    # stmt = db.session.query(Happy_Metrics).statement
+    # df = pd.read_sql_query(stmt, db.session.bind)
+    # COUNTRY_Happy = "United Kingdom"
+    # # Filter the data based on the sample number and
+    # # only keep rows with values above 1
+    # # happy_data = df.loc["HAPPINESS_SCORE", "FAMILY", COUNTRY_Happy]
+    # # Format the data to send as json
+    # data = {
+    #     "HAPPINESS_SCORE": sample_data.HAPPINESS_SCORE.values.tolist(),
+    #     "COUNTRY_Happy": sample_data[COUNTRY_Happy].values.tolist(),
+    #     "FAMILY": sample_data.FAMILY.tolist(),
+    # }
+    # return jsonify(data)
 
 @app.route("/socialhappy")
 def socialhappy():  

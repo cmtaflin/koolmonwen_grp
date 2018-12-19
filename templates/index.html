@@ -32,28 +32,15 @@
     <a href="/analysis">Analysis</a>
     <a href="/top-25">Top-25</a>
   </div>
+  
   <div class="row">
     <div class="col-md-6">
-      <div class="row">
-        <div class="row">
-          <div class="gadget">
-            <form method="get" id="search" action="#">
-              <span>
-                <input type="text" value="Enter Country Here.." name="s" id="s" />
-                <input name="searchsubmit" value="Search" id="searchsubmit" class="btn" />
-              </span>
-            </form>
-          </div>
-        </div>
-        <div class="row">
-          <div class="custom-select">
-            <select id="selYear" placeholder="Select Year:" onchange="optionchanged(this.value)">
-              <option value="1">2015</option>
-              <option value="2">2016</option>
-              <option value="3">2017</option>
-            </select>
-          </div>
-        </div>
+      <div class="custom-select">
+        <select id="selCountryindex" onchange="optionChanged(this.value)">
+          <option value="0">United States</option>
+          <!-- <option value="2">United Kindom</option>
+          <option value="3">Other</option> -->
+        </select>
       </div>
       <div class="row">
         <div class="box1">
@@ -83,11 +70,13 @@
   
  
   </div>
-  <script src="../static/js/app_home.js"></script>
+  <script src="https://cdn.plot.ly/plotly-1.31.2.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
   <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>  
+  <script src="../static/js/app_home.js"></script>
 </body>
 
 </html>
