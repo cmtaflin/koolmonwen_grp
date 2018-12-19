@@ -180,7 +180,7 @@ d3.json("/socialhappy", function(socialData) {
       .attr("r", "9")
       .attr("fill", "#350431")
       .attr("stroke", "grey")
-      .attr("opacity", ".9");
+      .attr("opacity", ".7");
 
       circlesGroup.filter(function(d) { 
         return d[chosenXAxis] == 0; 

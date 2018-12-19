@@ -8,7 +8,6 @@
   width: 400px;
   height: 300px;
   content: " ";
-  background-image: url("maxresdefault.jpg");
   background-repeat: no-repeat;
   background-position: 50% 0;
   background-size: cover;
@@ -60,4 +59,14 @@
     font-family: sans-serif;
     font-size: 16px;
     text-anchor: middle;
+  }
+
+  h3 {
+    font-size: 20px;
+    text-align: left;
+    font-display: bold;
+    font-family: Arial;
+    padding-left: 80px;
+    color: #350431;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   }
