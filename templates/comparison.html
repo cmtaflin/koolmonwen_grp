@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <title>World Happiness Report</title> 
-  <link rel="stylesheet" href="../static/css/reset.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <link rel="stylesheet" href="../static/css/styles.css">
+  <head>
+    <meta charset="UTF-8">
+    <title>World Happiness Report</title>
+    <!-- <link rel="stylesheet" href="..static/css/reset.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   
+  </head>
 
-</head>
 <body>
   <div class="container">
       <!-- <div class="outer">
@@ -31,10 +36,10 @@
   <div class="row">
     <div class="col-md-6">
       <div class="custom-select">
-        <select id="selcountrybase" onchange="optionchanged(this.value)">
-          <option value="1">United States</option>
-          <option value="2">United Kindom</option>
-          <option value="3">Other</option>
+        <select id="selCountryRight" onchange="optionchanged(this.value)">
+          <option value="0">United States</option>
+          <!-- <option value="2">United Kindom</option>
+          <option value="3">Other</option> -->
         </select>
       </div>
       <div class ="box1">
@@ -43,22 +48,20 @@
     </div>
     <div class="col-md-6">
       <div class="custom-select">
-        <select id="selYear" placeholder="Select Year:" onchange="optionchanged(this.value)">
-          <option value="1">United States</option>
-          <option value="2">United Kindom</option>
-          <option value="3">Other</option>
+        <select id="selCountryLeft" placeholder="Select Year:" onchange="optionchanged(this.value)">
+          <option value="0">United States</option>
+          <!-- <option value="2">United Kindom</option>
+          <option value="3">Other</option> -->
         </select>
       </div>  
       <div class="box2">
           <div id="compLeftPie"></div>
       </div>
     </div>
-  </div>
   </div> 
   <script src="https://cdn.plot.ly/plotly-1.31.2.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  
   <script src="../static/js/app_comparison.js"></script>
 </body>
 </html>

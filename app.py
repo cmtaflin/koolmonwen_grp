@@ -234,6 +234,7 @@ def happycountry(COUNTRY_Happy):
 def socialhappy():  
     
     testresult = db.session.query(Happy_Metrics).join(social_progress).filter(Happy_Metrics.COUNTRY==social_progress.Country).all()
+    #testresult = db.session.query(Happy_Metrics).join(social_progress).all()
     
     socialhappy = []
     for result in testresult:
@@ -256,34 +257,52 @@ def socialhappy():
         shappy_dict["Free_Cho"] = result.social_progress.Free_Cho
         shappy_dict["Tol_Incl"] = result.social_progress.Tol_Incl
         socialhappy.append(shappy_dict)
-        return jsonify(socialhappy)
+        
+    return jsonify(socialhappy)
 
 @app.route("/comparison/compRightPie")
 def compRightPie():
     # Use Pandas to perform the sql query
 
-    countryselect = "United Kingdom"
-    yearselect= 2015
-    results = db.session.query(Happy_Metrics.CONTINENT,Happy_Metrics.COUNTRY,Happy_Metrics.YEAR).filter(and_(Happy_Metrics.COUNTRY==countryselect,Happy_Metrics.YEAR==yearselect)).all()
-    # CMT notes:
-    # Add pull for year and country = 
+    # countryselect = d3.select("#selCountryLeft")
+    countryselect = "United States"
+    results = db.session.query(Happy_Metrics.COUNTRY,Happy_Metrics.REGION,Happy_Metrics.CONTINENT,\
+        Happy_Metrics.HAPPINESS_RANK,Happy_Metrics.HAPPINESS_SCORE,Happy_Metrics.ECONOMY_GDP_PER_CAPITA,Happy_Metrics.FAMILY,\
+        Happy_Metrics.HEALTH_LIFE_EXPECTANCY,Happy_Metrics.FREEDOM,Happy_Metrics.GENEROSITY,Happy_Metrics.TRUST_GOVERNMENT_CORRUPTION)\
+        .filter(Happy_Metrics.COUNTRY==countryselect).all() 
     
     compRightPie=[]
     for metrics in results:
         compRightPie_dict={}
-        compRightPie_dict["CONTINENT"]=metrics.CONTINENT
-        compRightPie_dict["COUNTRY"]=metrics.COUNTRY
-        compRightPie_dict["YEAR"]=metrics.YEAR
+        compRightPie_dict["ECONOMY_GDP_PER_CAPITA"]=metrics.ECONOMY_GDP_PER_CAPITA
+        compRightPie_dict["FAMILY"]=metrics.FAMILY
+        compRightPie_dict["HEALTH_LIFE_EXPECTANCY"]=metrics.HEALTH_LIFE_EXPECTANCY
+        compRightPie_dict["FREEDOM"]=metrics.FREEDOM
+        compRightPie_dict["GENEROSITY"]=metrics.GENEROSITY
+        compRightPie_dict["TRUST_GOVERNMENT_CORRUPTION"]=metrics.TRUST_GOVERNMENT_CORRUPTION
         compRightPie.append(compRightPie_dict)
+    
+    compRightPielabels_list = []
+    compRightPievalues_list = []
+    
+    for label, value in compRightPie_dict.items():
+        compRightPielabels_list.append(label)
+        compRightPievalues_list.append(value)
 
-    return jsonify(compRightPie)
-
+    data_py=[{
+        "labels":compRightPielabels_list,
+        "values":compRightPievalues_list,
+        "type":"pie"
+    }]
+    
+    return jsonify(data_py)
+    
 @app.route("/comparison/compLeftPie")
 def compLeftPie():
     # Use Pandas to perform the sql query
     
+    # countryselect = d3.select(selCountryRight)
     countryselect = "United Kingdom"
-    yearselect= 2016
     results = db.session.query(Happy_Metrics.COUNTRY,Happy_Metrics.REGION,Happy_Metrics.CONTINENT,\
         Happy_Metrics.HAPPINESS_RANK,Happy_Metrics.HAPPINESS_SCORE,Happy_Metrics.ECONOMY_GDP_PER_CAPITA,Happy_Metrics.FAMILY,\
         Happy_Metrics.HEALTH_LIFE_EXPECTANCY,Happy_Metrics.FREEDOM,Happy_Metrics.GENEROSITY,Happy_Metrics.TRUST_GOVERNMENT_CORRUPTION)\

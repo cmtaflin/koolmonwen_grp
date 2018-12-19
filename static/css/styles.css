@@ -42,13 +42,13 @@ h1 {
 select {
   margin-left: 30px;
 }
-/* .custom-select1 {
+.custom-select1 {
   position: relative;
   font-family: Arial;
   color: #350431;
   size: 60px;
  float: right;
-}  */
+}  
 .select-selected {
   background-color: #350431;
 }
@@ -63,29 +63,29 @@ select {
   border-color: #fff transparent transparent transparent;
 }
 .box1 {
-height: 400px;
+height: 500px;
 padding: 20px;
 color: rgb(26, 22, 22);
 background: #f0f0d5;
 border: 1px solid #350431;
 }
 
-/* .box2 {
-  height: 400px;
-  padding: 200px;
-  color: rgb(71, 37, 223);
-  background: #f0f0d5;
-  border-top: 1px solid #350431;
-  border-right: 1px solid #350431;
-  border-bottom: 1px solid #350431;
-  } */
+.box2 {
+height: 500px;
+padding: 20px;
+color: rgb(71, 37, 223);
+background: #f0f0d5;
+border-top: 1px solid #350431;
+border-right: 1px solid #350431;
+border-bottom: 1px solid #350431;
+}
 
 .btn {
-  color: #f0f0d5;;
-  font-family: Arial;
-  background: #350431;
-  height: 30px;
-  width: 75px;
+color: #f0f0d5;;
+font-family: Arial;
+background: #350431;
+height: 30px;
+width: 75px;
 }
 /* .btn1 {
   color: #f0f0d5;;
